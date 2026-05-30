@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои зависимости</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: nav}"></nav>
+
+<div class="container">
+    <h2>Мои зависимости</h2>
+
+    <h3>Мои зависимости</h3>
+    <div th:if="${myAddictions.isEmpty()}">
+        <p>Ты ещё не добавила зависимости</p>
+    </div>
+    <div th:each="addiction : ${myAddictions}" class="stat-card" style="margin-bottom:10px">
+        <p th:text="${addiction.name}"></p>
+        <p th:text="${addiction.description}"></p>
+        <form method="post" th:action="@{/addictions/remove/{id}(id=${addiction.id})}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn" style="background-color:#e74c3c">Убрать</button>
+        </form>
+    </div>
+
+    <h3>Добавить зависимость</h3>
+    <div th:each="addiction : ${allAddictions}" class="stat-card" style="margin-bottom:10px; border-left: 4px solid transparent;" th:style="${myAddictions.contains(addiction)} ? 'border-left: 4px solid #2ecc71' : ''">
+        <p th:text="${addiction.name}"></p>
+        <p th:text="${addiction.description}"></p>
+        <span th:if="${myAddictionIds.contains(addiction.id)}" style="color:#2ecc71; font-weight:bold">Уже добавлено</span>
+        <div th:if="${!myAddictionIds.contains(addiction.id)}">
+            <form method="post" th:action="@{/addictions/add/{id}(id=${addiction.id})}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${allAddictions.isEmpty()}">
+        <p>Список зависимостей пуст. Обратитесь к администратору.</p>
+    </div>
+</div>
+</body>
+</html>

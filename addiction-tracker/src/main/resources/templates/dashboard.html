@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/main.js}" defer></script>
+</head>
+<body>
+<nav th:replace="~{layout :: nav}"></nav>
+
+<div class="container">
+    <h2>Личный кабинет</h2>
+
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Мои зависимости</h3>
+            <ul th:if="${!addictions.isEmpty()}">
+                <li th:each="addiction : ${addictions}">
+                    <strong th:text="${addiction.name}"></strong>
+                </li>
+            </ul>
+            <p th:if="${addictions.isEmpty()}">Зависимости не добавлены</p>
+            <a th:href="@{/addictions}" class="btn">Управлять</a>
+        </div>
+
+        <div class="stat-card">
+            <h3>Последние записи</h3>
+            <ul th:if="${!entries.isEmpty()}">
+                <li th:each="entry : ${entries}" >
+                    <span th:text="${#temporals.format(entry.createdAt, 'dd.MM.yyyy HH:mm')}"></span> —
+                    <span th:text="${entry.relapsed} ? 'Срыв' : 'Держусь!'"></span>
+                </li>
+            </ul>
+            <p th:if="${entries.isEmpty()}">Записей пока нет</p>
+            <a th:href="@{/progress}" class="btn">Добавить запись</a>
+        </div>
+    </div>
+    <div class="stat-card" style="margin-top:20px">
+        <h3>Доступные зависимости</h3>
+        <div id="addictions-list">Загрузка...</div>
+    </div>
+</div>
+</body>
+</html>

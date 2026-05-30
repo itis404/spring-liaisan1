@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Addiction Tracker'">Addiction Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav>
+    <a th:href="@{/}">Главная</a>
+    <span th:if="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/dashboard}">Личный кабинет</a>
+            <a th:href="@{/logout}">Выйти</a>
+        </span>
+    <span th:unless="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/login}">Войти</a>
+            <a th:href="@{/register}">Регистрация</a>
+        </span>
+</nav>
+
+<div class="container" th:fragment="content">
+    <!-- контент страниц здесь -->
+</div>
+</body>
+</html>

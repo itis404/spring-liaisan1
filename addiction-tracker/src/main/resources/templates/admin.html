@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ панель</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: nav}"></nav>
+
+<div class="container">
+    <h2>Панель администратора</h2>
+
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Зависимости</h3>
+            <form method="post" th:action="@{/admin/addictions/add}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div>
+                    <label>Название:</label>
+                    <input type="text" name="name" required/>
+                </div>
+                <div>
+                    <label>Описание:</label>
+                    <input type="text" name="description"/>
+                </div>
+                <button type="submit" class="btn">Добавить</button>
+            </form>
+
+            <hr style="margin:20px 0">
+
+            <div th:each="addiction : ${addictions}" style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee">
+                <span th:text="${addiction.name}"></span>
+                <form method="post" th:action="@{/admin/addictions/delete/{id}(id=${addiction.id})}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="submit" class="btn" style="background-color:#e74c3c; padding:5px 10px">Удалить</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h3>Челленджи</h3>
+            <form method="post" th:action="@{/admin/challenges/add}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div>
+                    <label>Название:</label>
+                    <input type="text" name="title" required/>
+                </div>
+                <div>
+                    <label>Описание:</label>
+                    <input type="text" name="description"/>
+                </div>
+                <div>
+                    <label>Длительность (дней):</label>
+                    <input type="number" name="durationDays" min="1" required/>
+                </div>
+                <button type="submit" class="btn">Добавить</button>
+            </form>
+
+            <hr style="margin:20px 0">
+
+            <div th:each="challenge : ${challenges}" style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee">
+                <span th:text="${challenge.title}"></span>
+                <form method="post" th:action="@{/admin/challenges/delete/{id}(id=${challenge.id})}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="submit" class="btn" style="background-color:#e74c3c; padding:5px 10px">Удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Addiction Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: nav}"></nav>
+
+<div class="container">
+    <h1>Addiction Tracker</h1>
+    <p>Сайт для борьбы с зависимостями. Отслеживай прогресс, участвуй в челленджах и побеждай!</p>
+
+    <div class="features">
+        <div class="feature">
+            <h3>Отслеживай прогресс</h3>
+            <p>Веди дневник и смотри как далеко ты продвинулся</p>
+        </div>
+        <div class="feature">
+            <h3>Челленджи</h3>
+            <p>Участвуй в марафонах и достигай целей</p>
+        </div>
+        <div class="feature">
+            <h3>Мотивация</h3>
+            <p>Записывай мотивирующие мысли и возвращайся к ним</p>
+        </div>
+    </div>
+
+    <a th:href="@{/dashboard}" class="btn">Начать прямо сейчас</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Моя мотивация</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: nav}"></nav>
+
+<div class="container">
+    <h2>Моя мотивация</h2>
+    <p>Записывай почему ты борешься с зависимостью. Возвращайся к этим записям когда тяжело.</p>
+
+
+    <div class="stat-card" style="margin-bottom:20px">
+        <h3>Добавить запись</h3>
+        <form method="post" th:action="@{/motivations/add}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div>
+                <label>Почему я это делаю:</label>
+                <input type="text" name="text" required placeholder="например: ради здоровья своих детей"/>
+            </div>
+            <button type="submit" class="btn">Добавить</button>
+        </form>
+    </div>
+
+    <div th:if="${motivations.isEmpty()}">
+        <p>Записей пока нет. Напиши свою первую мотивацию!</p>
+    </div>
+
+    <div th:each="motivation : ${motivations}" class="stat-card" style="margin-bottom:10px">
+        <p th:text="${motivation.text}"></p>
+        <p style="color:#95a5a6; font-size:14px"
+           th:text="${#temporals.format(motivation.createdAt, 'dd.MM.yyyy HH:mm')}"></p>
+        <form method="post" th:action="@{/motivations/delete/{id}(id=${motivation.id})}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn" style="background-color:#e74c3c">Удалить</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

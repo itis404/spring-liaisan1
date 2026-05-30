@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Челленджи</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: nav}"></nav>
+
+<div class="container">
+    <h2>Челленджи</h2>
+
+    <h3>Мои челленджи</h3>
+    <div th:if="${myChallenges.isEmpty()}">
+        <p>Ты ещё не участвуешь ни в одном челлендже</p>
+    </div>
+    <div th:each="uc : ${myChallenges}" class="stat-card" style="margin-bottom:10px">
+        <p><strong th:text="${uc.challenge.title}"></strong></p>
+        <p th:text="${uc.challenge.description}"></p>
+        <p>Длительность: <span th:text="${uc.challenge.durationDays}"></span> дней</p>
+        <p>Начало: <span th:text="${#temporals.format(uc.startedAt, 'dd.MM.yyyy HH:mm')}"></span></p>
+        <p>Дней прошло: <span th:text="${daysMap[uc.id]}"></span></p>
+        <p th:text="${uc.completed} ? 'Завершён' : 'В процессе'"></p>
+        <div th:if="${!uc.completed}">
+            <form method="post" th:action="@{/challenges/complete/{id}(id=${uc.id})}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn" style="background-color:#2ecc71">Отметить как выполненный</button>
+            </form>
+        </div>
+        <form method="post" th:action="@{/challenges/leave/{id}(id=${uc.challenge.id})}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn" style="background-color:#e74c3c">Покинуть</button>
+        </form>
+    </div>
+
+    <h3>Все челленджи</h3>
+    <div th:if="${allChallenges.isEmpty()}">
+        <p>Челленджей пока нет</p>
+    </div>
+    <div th:each="challenge : ${allChallenges}" class="stat-card" style="margin-bottom:10px">
+        <p><strong th:text="${challenge.title}"></strong></p>
+        <p th:text="${challenge.description}"></p>
+        <p>Длительность: <span th:text="${challenge.durationDays}"></span> дней</p>
+        <div th:if="${!myChallengeIds.contains(challenge.id)}">
+            <form method="post" th:action="@{/challenges/join/{id}(id=${challenge.id})}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn">Участвовать</button>
+            </form>
+        </div>
+        <div th:if="${myChallengeIds.contains(challenge.id)}">
+            <p style="color:green">Ты уже участвуешь</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

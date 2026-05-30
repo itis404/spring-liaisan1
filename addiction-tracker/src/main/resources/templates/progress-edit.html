@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактировать запись</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: nav}"></nav>
+
+<div class="container">
+  <h2>Редактировать запись</h2>
+
+  <form method="post" th:action="@{/progress/edit/{id}(id=${entry.id})}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <div>
+      <label>Зависимость:</label>
+      <select name="addictionId">
+        <option th:each="a : ${addictions}"
+                th:value="${a.id}"
+                th:text="${a.name}"
+                th:selected="${a.id == entry.addiction.id}"></option>
+      </select>
+    </div>
+    <div>
+      <label>Заметка:</label>
+      <input type="text" name="note" th:value="${entry.note}"/>
+    </div>
+    <div>
+      <label>
+        <input type="checkbox" name="relapsed" value="true" th:checked="${entry.relapsed}"/>
+        Был срыв
+      </label>
+    </div>
+    <button type="submit" class="btn">Сохранить</button>
+    <a th:href="@{/progress}" class="btn" style="background-color:#95a5a6">Отмена</a>
+  </form>
+</div>
+</body>
+</html>
